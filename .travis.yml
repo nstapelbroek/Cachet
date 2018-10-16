@@ -11,11 +11,11 @@ before_install:
   - cp .env.example .env
   - phpenv config-rm xdebug.ini
 
+install:
+  - travis_retry composer install --no-interaction --no-suggest
+
 jobs:
   include:
-    - stage: install dependencies
-      script: travis_retry composer install --no-interaction --no-suggest
-      php: 7.2
     - stage: test
       script: vendor/bin/phpunit
       php: 7.2
@@ -28,7 +28,7 @@ jobs:
         - wget https://scrutinizer-ci.com/ocular.phar
         - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
       php: 7.1
-    - stage: security scan
+    - stage: CVE scan
       script:
         - wget https://get.sensiolabs.org/security-checker.phar
         - php security-checker.phar security:check /path/to/composer.lock

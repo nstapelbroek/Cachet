@@ -28,7 +28,13 @@ jobs:
       php: 7.1
     - stage: coverage
       script:
-        - vendor/bin/phpunit --coverage-clover build/logs/clover.xml;
+        - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
         - wget https://scrutinizer-ci.com/ocular.phar
         - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
       php: 7.1
+    - stage: security scan
+      script:
+        - wget https://get.sensiolabs.org/security-checker.phar
+        - php security-checker.phar security:check /path/to/composer.lock
+      php: 7.2
+
